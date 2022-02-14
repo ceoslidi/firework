@@ -1,0 +1,18 @@
+{
+    "name": "ceo/firework",
+    "description": "Simple Framework for Creating Simple Apps",
+    "type": "framework",
+    "autoload": {
+        "psr-4": {
+            "Firework\\": "Firework",
+            "App\\Controllers\\": "App/Controllers"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yan Svintsov",
+            "email": "ceo@slidi.ru"
+        }
+    ],
+    "require": {}
+}
