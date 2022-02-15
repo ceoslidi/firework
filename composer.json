@@ -14,5 +14,7 @@
             "email": "ceo@slidi.ru"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-openssl": "*"
+    }
 }
