@@ -1,6 +1,6 @@
 <?php
 
-require './App/bootstrap.php';
+require './app/bootstrap.php';
 
 use Firework\Router;
 
