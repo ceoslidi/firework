@@ -4,8 +4,9 @@
     "type": "framework",
     "autoload": {
         "psr-4": {
-            "Firework\\": "Firework",
-            "App\\Controllers\\": "App/Controllers"
+            "Firework\\": "firework",
+            "App\\Controllers\\": "app/controllers",
+            "Config\\": "config"
         }
     },
     "authors": [

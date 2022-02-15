@@ -4,8 +4,8 @@ namespace Firework;
 
 class Router
 {
-    public $getRoutes = [];
-    public $postRoutes = [];
+    private $getRoutes = [];
+    private $postRoutes = [];
 
     private $requestUrl = '';
     private $requestMethod = '';
@@ -25,7 +25,7 @@ class Router
      * @param string $requestMethod
      * @return void
      */
-    public function request(string $requestUrl, string $requestMethod)
+    private function request(string $requestUrl, string $requestMethod)
     {
         switch ($requestMethod)
         {
