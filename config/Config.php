@@ -2,25 +2,13 @@
 
 namespace Config;
 
+use Firework\Env;
+
 class Config
 {
-    private array $database = [
-        'host' => '46.0.203.139',
-        'user' => 'root',
-        'password' => 'YanSvin2007!',
-        'database' => 'slidi'
-    ];
-    private string $salt = '';
-
-    /**
-     * @param array $database
-     * @return bool
-     */
-    public function setDatabase(array $database): bool
+    public function __construct()
     {
-        $this->database = $database;
-
-        return true;
+        $env = new Env();
     }
 
     /**
@@ -28,17 +16,12 @@ class Config
      */
     public function getDatabase(): array
     {
-        return $this->database;
-    }
-
-    /**
-     * @return bool
-     */
-    public function setSalt(): bool
-    {
-        $this->salt = openssl_random_pseudo_bytes(16);
-
-        return true;
+        return [
+            'host' => getenv('DATABASE_HOST'),
+            'user' => getenv('DATABASE_USER'),
+            'password' => getenv('DATABASE_PASSWORD'),
+            'database' => getenv('DATABASE_NAME'),
+        ];
     }
 
     /**
@@ -46,6 +29,6 @@ class Config
      */
     public function getSalt(): string
     {
-        return $this->salt;
+        return getenv('SALT');
     }
 }
