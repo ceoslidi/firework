@@ -37,7 +37,7 @@ class Installer {
 
     private function setSalt(): void
     {
-        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()';
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz!@$%^&*()';
 
         $salt = PHP_EOL . PHP_EOL . "SALT=" . substr(str_shuffle($permitted_chars), 0, 16);
 
