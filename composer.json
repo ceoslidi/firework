@@ -16,6 +16,6 @@
         }
     ],
     "require": {
-      "ext-openssl": "*"
+        "vlucas/phpdotenv": "^5.4"
     }
 }

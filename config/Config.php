@@ -2,15 +2,29 @@
 
 namespace Config;
 
+use Firework\Env;
+use Firework\Generate;
+
 class Config
 {
+    private Generate $generate;
+    private Env $env;
+
+    public function __construct()
+    {
+        $env = new Env();
+        $this->env = $env;
+
+        $generate = new Generate();
+        $this->generate = $generate;
+    }
+
     private array $database = [
         'host' => '46.0.203.139',
         'user' => 'root',
         'password' => 'YanSvin2007!',
         'database' => 'slidi'
     ];
-    private string $salt = '';
 
     /**
      * @param array $database
@@ -36,9 +50,9 @@ class Config
      */
     public function setSalt(): bool
     {
-        $this->salt = openssl_random_pseudo_bytes(16);
+        $env = PHP_EOL . "SALT=" . $this->generate->generateString(16);
 
-        return true;
+        return $this->env->putContent($env);
     }
 
     /**
@@ -46,6 +60,6 @@ class Config
      */
     public function getSalt(): string
     {
-        return $this->salt;
+        return getenv('salt');
     }
 }
