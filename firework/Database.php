@@ -29,11 +29,12 @@ class Database
     }
 
     /**
+     * @param string $table
      * @param array $fields
      * @param array $where
      * @return array|false
      */
-    public function select(array $fields, array $where)
+    public function select(string $table, array $fields, array $where): bool|array
     {
         $queryString = 'SELECT ';
         $keys = [];
@@ -49,13 +50,13 @@ class Database
             if ($i != count($fields) - 1)
                 $queryString .= $fields[$i] . ', ';
             else
-                $queryString .= $fields[$i] . ' FROM users WHERE ';
+                $queryString .= $fields[$i] . ' FROM ' . $table . ' WHERE ';
         }
 
         for ($i = 0; $i < count($where); $i++)
         {
             if ($i != count($where) - 1)
-                $queryString .= $keys[$i] . ' = "' . $where[$keys[$i]] . '" AND ';
+                $queryString .= $keys[$i] . ' = "' . $where[$keys[$i]] . '", ';
             else
                 $queryString .= $keys[$i] . ' = "' . $where[$keys[$i]] . '"';
         }
@@ -77,12 +78,62 @@ class Database
     }
 
     /**
+     * @param string $table
+     * @param array $query
+     * @param array $where
+     * @return bool
+     */
+    public function update(string $table, array $query, array $where): bool
+    {
+        $queryString = 'UPDATE ' . $table . ' SET ';
+
+        $fieldsKeys = [];
+        $whereKeys = [];
+
+        for ($i = 0; $i < count($query); $i++)
+        {
+            $fieldsKeys[$i] = key($query);
+            next($query);
+        }
+
+        for ($i = 0; $i < count($where); $i++)
+        {
+            $whereKeys[$i] = key($where);
+            next($where);
+        }
+
+        for ($i = 0; $i < count($query); $i++)
+        {
+            if ($i != count($query) - 1)
+                $queryString .= $fieldsKeys[$i] . '="' . $query[$fieldsKeys[$i]] . '", ';
+            else
+                $queryString .= $fieldsKeys[$i] . '="' . $query[$fieldsKeys[$i]] . '" WHERE ';
+        }
+
+        for ($i = 0; $i < count($where); $i++)
+        {
+            if ($i != count($where) - 1)
+                $queryString .= $whereKeys[$i] . '="' . $where[$whereKeys[$i]] . '", ';
+            else
+                $queryString .= $whereKeys[$i] . '="' . $where[$whereKeys[$i]] . '"';
+        }
+
+        $result = mysqli_query($this->connection, $queryString);
+
+        if ($result)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * @param string $table
      * @param array $query
      * @return bool
      */
-    public function insert(array $query)
+    public function insert(string $table, array $query): bool
     {
-        $queryString = 'INSERT INTO users (';
+        $queryString = 'INSERT INTO ' . $table . ' (';
         $keys = [];
 
         for ($i = 0; $i < count($query); $i++)
@@ -105,6 +156,38 @@ class Database
                 $queryString .= '"' . $query[$keys[$i]] . '", ';
             else
                 $queryString .= '"' . $query[$keys[$i]] . '")';
+        }
+
+        $result = mysqli_query($this->connection, $queryString);
+
+        if ($result)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * @param string $table
+     * @param array $where
+     * @return bool
+     */
+    public function delete(string $table, array $where): bool
+    {
+        $queryString = 'DELETE FROM ' . $table . ' WHERE ';
+        $keys = [];
+
+        for ($i = 0; $i < count($where); $i++)
+        {
+            $keys[$i] = key($where);
+            next($where);
+        }
+
+        for ($i = 0; $i < count($where); $i++)
+        {
+            if ($i != count($where) - 1)
+                $queryString .= $keys[$i] . '="' . $where[$keys[$i]] . '", ';
+            else
+                $queryString .= $keys[$i] . '="' . $where[$keys[$i]] . '"';
         }
 
         $result = mysqli_query($this->connection, $queryString);

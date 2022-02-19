@@ -2,6 +2,8 @@
 
 namespace Firework;
 
+use Error;
+
 class Router
 {
     private $getRoutes = [];
@@ -37,18 +39,12 @@ class Router
      */
     private function request(string $requestUrl, string $requestMethod)
     {
-        if (in_array($requestUrl, $this->getRoutes) || in_array($requestUrl, $this->postRoutes)) {
-            switch ($requestMethod)
-            {
-                case 'GET':
-                    $handler = $this->getRoutes[$requestUrl];
-                    break;
-                case 'POST':
-                    $handler = $this->postRoutes[$requestUrl];
-                    break;
-                default:
-                    throw new Error('Unknown request method');
-            }
+        if (isset($this->getRoutes[$requestUrl]) || isset($this->postRoutes[$requestUrl])) {
+            $handler = match ($requestMethod) {
+                'GET' => $this->getRoutes[$requestUrl],
+                'POST' => $this->postRoutes[$requestUrl],
+                default => throw new Error('Unknown request method'),
+            };
 
             $class = $handler[0];
             $method = $handler[1];
