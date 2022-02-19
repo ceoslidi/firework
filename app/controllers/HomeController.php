@@ -17,6 +17,7 @@ class HomeController
 
         echo '<pre>';
         print_r($hash->hash('zhopa'));
+        print_r($database->connect()->delete('users', ['username' => 'xuy']));
         echo '</pre>';
     }
 
