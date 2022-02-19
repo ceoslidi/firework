@@ -11,15 +11,17 @@ module.exports = {
       {
         test: /\.ts$/,
         use: "ts-loader",
-        exclude: /node_modules/,
+        exclude: /app/js/,
       },
       {
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
+	exclude: /app/css/
       },
       {
         test: /\.scss$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+	exclude: /app/css/
       },
       {
         test: /\.png/,  // TODO: .jpg, .webp?
