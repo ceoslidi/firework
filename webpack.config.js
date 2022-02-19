@@ -1,40 +1,35 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path')
 
 module.exports = {
-  plugins: [
-    new MiniCssExtractPlugin(),
-  ],
-  mode: "production",
-  devtool: "nosources-source-map",
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        use: "ts-loader",
-        exclude: /app/js/,
-      },
-      {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
-	exclude: /app/css/
-      },
-      {
-        test: /\.scss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
-	exclude: /app/css/
-      },
-      {
-        test: /\.png/,  // TODO: .jpg, .webp?
-        type: "asset",
-        parser: {
-          dataUrlCondition: {
-            maxSize: 10 * 1024,  // 10kb
-          },
-        },
-      },
+    entry: './app/index.js',
+    plugins: [
+        new MiniCssExtractPlugin(),
     ],
-  },
-  resolve: {
-    extensions: [".ts", ".js"],
-  },
+    mode: "production",
+    devtool: "nosources-source-map",
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                use: "ts-loader",
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
+            },
+            {
+                test: /\.scss$/i,
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+            },
+        ],
+    },
+    resolve: {
+        extensions: [".ts", ".js"],
+    },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'index_bundle.js'
+    }
 };
