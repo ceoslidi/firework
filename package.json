@@ -1,0 +1,14 @@
+{
+  "name": "firework",
+  "version": "0.24.0",
+  "description": "Simple Framework for Creating Simple Apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yan Svintsov",
+  "license": "ISC",
+  "dependencies": {
+    "mini-css-extract-plugin": "^2.5.3"
+  }
+}
