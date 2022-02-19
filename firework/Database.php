@@ -3,7 +3,6 @@
 namespace Firework;
 
 use Config\Config;
-use http\Params;
 
 class Database
 {
