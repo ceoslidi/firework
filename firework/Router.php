@@ -14,7 +14,17 @@ class Router
     {
         error_reporting(E_ALL & ~E_DEPRECATED);
 
-        $this->requestUrl = $_SERVER['REDIRECT_URL'];
+        $url = $_SERVER['REQUEST_URI'];
+        $queryPost = strrpos($url, "?");
+        $redirectUrl = '';
+
+        if ($queryPost) {
+            $redirectUrl = substr($url, 0, $queryPost);
+        } else {
+            $redirectUrl = $url;
+        }
+
+        $this->requestUrl = $redirectUrl;
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
 
         $this->request($this->requestUrl, $this->requestMethod);
@@ -27,22 +37,31 @@ class Router
      */
     private function request(string $requestUrl, string $requestMethod)
     {
-        switch ($requestMethod)
-        {
-            case 'GET':
-                $handler = $this->getRoutes[$requestUrl];
-                break;
-            case 'POST':
-                $handler = $this->postRoutes[$requestUrl];
-                break;
-            default:
-                throw new Error('Unknown request method');
+        if (in_array($requestUrl, $this->getRoutes) || in_array($requestUrl, $this->postRoutes)) {
+            switch ($requestMethod)
+            {
+                case 'GET':
+                    $handler = $this->getRoutes[$requestUrl];
+                    break;
+                case 'POST':
+                    $handler = $this->postRoutes[$requestUrl];
+                    break;
+                default:
+                    throw new Error('Unknown request method');
+            }
+
+            $class = $handler[0];
+            $method = $handler[1];
+
+            call_user_func([$class, $method]);
+        } else {
+            $this->throwNotFound();
         }
+    }
 
-        $class = $handler[0];
-        $method = $handler[1];
-
-        call_user_func([$class, $method]);
+    private function throwNotFound()
+    {
+        print_r('404');
     }
 
     /**
