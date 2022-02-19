@@ -58,8 +58,6 @@ class Router
     private function throwNotFound()
     {
         print_r('404');
-        print_r($this->getRoutes);
-        print_r($this->requestUrl);
     }
 
     /**
