@@ -9,7 +9,10 @@
   "author": "Yan Svintsov",
   "license": "ISC",
   "dependencies": {
-    "mini-css-extract-plugin": "^2.5.3"
+    "mini-css-extract-plugin": "^2.5.3",
+    "sass": "^1.49.8",
+    "sass-loader": "^12.6.0",
+    "webpack": "^5.69.1"
   },
   "devDependencies": {
     "webpack-cli": "^4.9.2"
