@@ -9,4 +9,4 @@ use App\Controllers\HomeController;
 $router = new Router();
 
 $router->get('/home', [HomeController::class, 'render']);
-$router->post('/home', [HomeController::class, 'response']);
+$router->post('/home', [HomeController::class, 'filer']);

@@ -23,7 +23,7 @@ class File
         $mime = $settings['onlyImage'];
         $maxSize = $settings['maxSize'];
         $tempname = $this->files[$formName]["tmp_name"];
-        $filename = $targetDir . time() . basename($this->files[$formName]["name"]);
+        $filename =str_replace(' ', '', __DIR__ . '/../' . $targetDir . time() . '-' . basename($this->files[$formName]["name"]));
         $size = $this->files[$formName]["size"];
 
         $isOk = true;

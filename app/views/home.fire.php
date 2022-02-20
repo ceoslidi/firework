@@ -8,7 +8,9 @@
     <title>Document</title>
 </head>
 <body>
-    {{xui}}
-    {{dob}}
+<form action="/home" method="post" enctype="multipart/form-data">
+    <input type="file" name="xui">
+    <input type="submit" value="Send">
+</form>
 </body>
 </html>

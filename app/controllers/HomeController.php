@@ -16,16 +16,19 @@ class HomeController
 
     public function render($request, $response)
     {
-        $database = new Database();
-        $hash = new Hash();
-        $config = new Config();
-        $session = new Session();
-        $file = new File();
         $view = new View();
 
-        $obj = ['xui' => 'pizda', 'dob' => 'pzdc'];
+        $obj = [];
 
         $view->renderView('home', $obj);
+    }
+
+    public function filer($request, $response)
+    {
+        $file = new File();
+
+        $file->upload('xui');
+        $response->reply(['status' => 'success']);
     }
 
     public function response()
