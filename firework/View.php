@@ -2,37 +2,54 @@
 
 namespace Firework;
 
+use Exception;
+
 class View {
     /**
      * @param string viewName
-     * @param object varValues
-     * @return string
-     * @throws \Exception
+     * @param array varValues
+     * @return void
+     * @throws Exception
      */
-    public function renderView(string $viewName, object $varValues): string
+    public function renderView(string $viewName, array $varValues): void
     {
-        $fileName = $viewName . '.firework.php';
-        $view = $this->getView($fileName, $varValues);
+        $fileName = $viewName . '.fire.php';
+        $view = $this->getView($fileName);
+        $matches = [];
 
         preg_match_all('/{{.*}}/i', $view, $matches);
+        $matches = $matches[0];
+
+        $data = [];
+
+        for ($i = 0; $i < count($varValues); $i++)
+        {
+            $str = str_replace('{', '', $matches[$i]);
+            $str = str_replace('}', '', $str);
+
+            $data[$matches[$i]] = $varValues[$str];
+        }
+
         foreach ($matches as $elem)
         {
-            preg_replace('{{' . $elem . '}}', $varValues->$elem, $view);
+            $str = $data[$elem];
+            $view = str_replace($elem, $str, $view);
         }
-        return $view;
+
+        print_r($view);
     }
 
     /**
      * @param string fileName
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     private function getView($fileName): string
     {
-        $view = file_get_contents(urldecode('./app/views/' . $fileName));
+        $view = file_get_contents(urldecode(__DIR__ . '/../app/views/' . $fileName));
 
         if ($view === false)
-            throw new \Exception('Cannot reach the file you\' re looking for.');
+            throw new Exception('Cannot reach the file you\' re looking for.');
 
         return $view;
     }

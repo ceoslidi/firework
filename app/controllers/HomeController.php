@@ -5,6 +5,8 @@ namespace App\Controllers;
 use Firework\Database;
 use Firework\Hash;
 use Firework\Session;
+use Firework\File;
+use Firework\View;
 
 use Config\Config;
 
@@ -14,16 +16,19 @@ class HomeController
 
     public function render($request, $response)
     {
-        $database = new Database();
-        $hash = new Hash();
-        $config = new Config();
-        $session = new Session();
+        $view = new View();
 
-        echo '<pre>';
-        $get = $request->get;
-        print_r($get['axuy']);
+        $obj = [];
+
+        $view->renderView('home', $obj);
+    }
+
+    public function filer($request, $response)
+    {
+        $file = new File();
+
+        $file->upload('xui');
         $response->reply(['status' => 'success']);
-        echo '</pre>';
     }
 
     public function response()

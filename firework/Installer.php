@@ -5,6 +5,7 @@ class Installer {
     {
         $this->setDatabase();
         $this->setSalt();
+        $this->setUploadsDir();
     }
 
     /**
@@ -35,6 +36,9 @@ class Installer {
             fwrite(STDOUT, "DATABASE: Something went wrong!" . PHP_EOL);
     }
 
+    /**
+     * @return void
+     */
     private function setSalt(): void
     {
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz!@$%^&*()';
@@ -45,6 +49,21 @@ class Installer {
 
         if ($saltResponse)
             fwrite(STDOUT, "SALT: SUCCESS!" . PHP_EOL);
+        else
+            fwrite(STDOUT, "SALT: Something went wrong!" . PHP_EOL);
+    }
+
+    /**
+     * @return void
+     */
+    private function setUploadsDir(): void
+    {
+        $file = PHP_EOL . PHP_EOL . "UPLOADS_DIR=" . trim(fgets(STDIN));
+
+        $fileResponse = file_put_contents(__DIR__ . '/../.env', $file, FILE_APPEND);
+
+        if ($fileResponse)
+            fwrite(STDOUT, "UPLOADS: SUCCESS!" . PHP_EOL);
         else
             fwrite(STDOUT, "SALT: Something went wrong!" . PHP_EOL);
     }

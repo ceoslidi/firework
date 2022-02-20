@@ -31,4 +31,16 @@ class Config
     {
         return getenv('SALT');
     }
+
+    /**
+     * @return array
+     */
+    public function getUploadsSettings(): array
+    {
+        return [
+            'dir' => getenv('UPLOADS_DIR'),
+            'maxSize' => getenv('UPLOADS_MAX_SIZE'),
+            'onlyImage' => getenv('UPLOADS_MIME_IMAGE'),
+        ];
+    }
 }
