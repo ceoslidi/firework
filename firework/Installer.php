@@ -62,6 +62,9 @@ class Installer {
 
         $fileResponse = file_put_contents(__DIR__ . '/../.env', $file, FILE_APPEND);
 
+        file_put_contents(__DIR__ . '/../.env', PHP_EOL . "UPLOADS_MAX_SIZE=500000", FILE_APPEND);
+        file_put_contents(__DIR__ . '/../.env', PHP_EOL . "UPLOADS_MIME_IMAGE=1", FILE_APPEND);
+
         if ($fileResponse)
             fwrite(STDOUT, "UPLOADS: SUCCESS!" . PHP_EOL);
         else
