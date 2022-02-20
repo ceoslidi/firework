@@ -6,6 +6,7 @@ use Firework\Database;
 use Firework\Hash;
 use Firework\Session;
 use Firework\File;
+use Firework\View;
 
 use Config\Config;
 
@@ -20,10 +21,11 @@ class HomeController
         $config = new Config();
         $session = new Session();
         $file = new File();
+        $view = new View();
 
-        echo '<pre>';
-        print_r($file->upload());
-        echo '</pre>';
+        $obj = json_encode([]);
+
+        $view->renderView('home', $obj);
     }
 
     public function response()

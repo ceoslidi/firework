@@ -11,7 +11,7 @@ class View {
      */
     public function renderView(string $viewName, object $varValues): string
     {
-        $fileName = $viewName . '.firework.php';
+        $fileName = $viewName . '.fire.php';
         $view = $this->getView($fileName, $varValues);
 
         preg_match_all('/{{.*}}/i', $view, $matches);
@@ -29,7 +29,7 @@ class View {
      */
     private function getView($fileName): string
     {
-        $view = file_get_contents(urldecode('./app/views/' . $fileName));
+        $view = file_get_contents(urldecode(__DIR__ . '/../app/views/' . $fileName));
 
         if ($view === false)
             throw new \Exception('Cannot reach the file you\' re looking for.');
