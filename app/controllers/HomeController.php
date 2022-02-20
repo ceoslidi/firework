@@ -2,37 +2,22 @@
 
 namespace App\Controllers;
 
-use Firework\Database;
-use Firework\Hash;
-use Firework\Session;
-use Firework\File;
-use Firework\View;
+use Firework\Controller;
 
-use Config\Config;
-
-class HomeController
+class HomeController extends Controller
 {
     private string $name = 'xui';
 
     public function render($request, $response)
     {
-        $view = new View();
-
         $obj = [];
 
-        $view->renderView('home', $obj);
+        $this->view->renderView('home', $obj);
     }
 
     public function filer($request, $response)
     {
-        $file = new File();
-
-        $file->upload('xui');
+        $this->file->upload('image');
         $response->reply(['status' => 'success']);
-    }
-
-    public function response()
-    {
-        echo 'pizdas';
     }
 }

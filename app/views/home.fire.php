@@ -9,7 +9,7 @@
 </head>
 <body>
 <form action="/home" method="post" enctype="multipart/form-data">
-    <input type="file" name="xui">
+    <input type="file" name="image">
     <input type="submit" value="Send">
 </form>
 </body>
