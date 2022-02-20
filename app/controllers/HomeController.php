@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Firework\Database;
 use Firework\Hash;
 use Firework\Session;
+use Firework\File;
 
 use Config\Config;
 
@@ -18,11 +19,10 @@ class HomeController
         $hash = new Hash();
         $config = new Config();
         $session = new Session();
+        $file = new File();
 
         echo '<pre>';
-        $get = $request->get;
-        print_r($get['axuy']);
-        $response->reply(['status' => 'success']);
+        print_r($file->upload());
         echo '</pre>';
     }
 
