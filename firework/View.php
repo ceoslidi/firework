@@ -4,38 +4,36 @@ namespace Firework;
 
 class View {
     /**
-      * @param string $view_name
-      * @param object $var_values
-      * @return string
+     * @param string viewName
+     * @param object varValues
+     * @return string
+     * @throws \Exception
      */
-    public function render(string $view_name, object $var_values): string
+    public function renderView(string $viewName, object $varValues): string
     {
-        $filename = $view_name . '.firework.php';
-        $view = $this->get_view($filename, $var_values);
-
-        if ($view === false)
-            return false;
+        $fileName = $viewName . '.firework.php';
+        $view = $this->getView($fileName, $varValues);
 
         preg_match_all('/{{.*}}/i', $view, $matches);
         foreach ($matches as $elem)
         {
-            preg_replace('{{' . $elem . '}}', $var_values->$elem, $view);
+            preg_replace('{{' . $elem . '}}', $varValues->$elem, $view);
         }
         return $view;
     }
 
     /**
-     * @param string filename
+     * @param string fileName
      * @return string
+     * @throws \Exception
      */
-    private function get_view($filename): string
+    private function getView($fileName): string
     {
-        $view = file_get_contents(urldecode('./app/views/' . $filename));
+        $view = file_get_contents(urldecode('./app/views/' . $fileName));
 
         if ($view === false)
-            return false;
+            throw new \Exception('Cannot reach the file you\' re looking for.');
 
         return $view;
-
     }
 }
