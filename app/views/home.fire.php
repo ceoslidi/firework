@@ -9,5 +9,6 @@
 </head>
 <body>
     {{xui}}
+    {{dob}}
 </body>
 </html>

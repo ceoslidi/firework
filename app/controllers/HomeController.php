@@ -23,7 +23,7 @@ class HomeController
         $file = new File();
         $view = new View();
 
-        $obj = json_encode([]);
+        $obj = ['xui' => 'pizda', 'dob' => 'pzdc'];
 
         $view->renderView('home', $obj);
     }
