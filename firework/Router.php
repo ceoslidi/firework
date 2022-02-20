@@ -4,39 +4,28 @@ namespace Firework;
 
 use Error;
 
+use Firework\Response;
+use Firework\Request;
+
 class Router
 {
-    private array $getRoutes = [];
-    private array $postRoutes = [];
+    private array $getRoutes;
+    private array $postRoutes;
 
-    private string $requestUrl = '';
-    private string $requestMethod = '';
+    private Request $request;
+    private Response $response;
 
-    private array $get = [];
-    private array $post = [];
+    public function __construct()
+    {
+        $this->request = new Request();
+        $this->response = new Response();
+    }
 
     public function __destruct()
     {
         error_reporting(E_ALL & ~E_DEPRECATED);
 
-        $url = $_SERVER['REQUEST_URI'];
-        $queryPost = strrpos($url, "?");
-
-        $redirectUrl = '';
-        $requestQuery = [];
-
-        if ($queryPost) {
-            $redirectUrl = substr($url, 0, $queryPost);
-        } else {
-            $redirectUrl = $url;
-        }
-
-        $this->requestUrl = $redirectUrl;
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
-
-        $this->get = $_GET;
-
-        $this->request($this->requestUrl, $this->requestMethod);
+        $this->request($this->request->requestUrl, $this->request->requestMethod);
     }
 
     /**
@@ -56,18 +45,7 @@ class Router
             $class = new $handler[0]();
             $method = $handler[1];
 
-            switch ($requestMethod)
-            {
-                case 'GET':
-                    call_user_func([$class, $method], $this->get);
-                    break;
-                case 'POST':
-                    call_user_func([$class, $method], $this->post);
-                    break;
-                default:
-                    throw new Error("Unknown request method");
-                    break;
-            }
+            call_user_func([$class, $method], $this->request, $this->response);
         } else {
             $this->throwNotFound();
         }
