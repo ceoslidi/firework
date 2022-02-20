@@ -6,11 +6,14 @@ use Error;
 
 class Router
 {
-    private $getRoutes = [];
-    private $postRoutes = [];
+    private array $getRoutes = [];
+    private array $postRoutes = [];
 
-    private $requestUrl = '';
-    private $requestMethod = '';
+    private string $requestUrl = '';
+    private string $requestMethod = '';
+
+    private array $get = [];
+    private array $post = [];
 
     public function __destruct()
     {
@@ -18,7 +21,9 @@ class Router
 
         $url = $_SERVER['REQUEST_URI'];
         $queryPost = strrpos($url, "?");
+
         $redirectUrl = '';
+        $requestQuery = [];
 
         if ($queryPost) {
             $redirectUrl = substr($url, 0, $queryPost);
@@ -28,6 +33,8 @@ class Router
 
         $this->requestUrl = $redirectUrl;
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+
+        $this->get = $_GET;
 
         $this->request($this->requestUrl, $this->requestMethod);
     }
@@ -46,15 +53,29 @@ class Router
                 default => throw new Error('Unknown request method'),
             };
 
-            $class = $handler[0];
+            $class = new $handler[0]();
             $method = $handler[1];
 
-            call_user_func([$class, $method]);
+            switch ($requestMethod)
+            {
+                case 'GET':
+                    call_user_func([$class, $method], $this->get);
+                    break;
+                case 'POST':
+                    call_user_func([$class, $method], $this->post);
+                    break;
+                default:
+                    throw new Error("Unknown request method");
+                    break;
+            }
         } else {
             $this->throwNotFound();
         }
     }
 
+    /**
+     * @return void
+     */
     private function throwNotFound()
     {
         print_r('404');
@@ -70,6 +91,11 @@ class Router
         $this->getRoutes[$url] = $handler;
     }
 
+    /**
+     * @param string $url
+     * @param array $handler
+     * @return void
+     */
     public function post(string $url, array $handler)
     {
         $this->postRoutes[$url] = $handler;
