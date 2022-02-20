@@ -4,32 +4,28 @@ namespace Firework;
 
 use Error;
 
+use Firework\Response;
+use Firework\Request;
+
 class Router
 {
-    private $getRoutes = [];
-    private $postRoutes = [];
+    private array $getRoutes;
+    private array $postRoutes;
 
-    private $requestUrl = '';
-    private $requestMethod = '';
+    private Request $request;
+    private Response $response;
+
+    public function __construct()
+    {
+        $this->request = new Request();
+        $this->response = new Response();
+    }
 
     public function __destruct()
     {
         error_reporting(E_ALL & ~E_DEPRECATED);
 
-        $url = $_SERVER['REQUEST_URI'];
-        $queryPost = strrpos($url, "?");
-        $redirectUrl = '';
-
-        if ($queryPost) {
-            $redirectUrl = substr($url, 0, $queryPost);
-        } else {
-            $redirectUrl = $url;
-        }
-
-        $this->requestUrl = $redirectUrl;
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
-
-        $this->request($this->requestUrl, $this->requestMethod);
+        $this->request($this->request->requestUrl, $this->request->requestMethod);
     }
 
     /**
@@ -46,15 +42,18 @@ class Router
                 default => throw new Error('Unknown request method'),
             };
 
-            $class = $handler[0];
+            $class = new $handler[0]();
             $method = $handler[1];
 
-            call_user_func([$class, $method]);
+            call_user_func([$class, $method], $this->request, $this->response);
         } else {
             $this->throwNotFound();
         }
     }
 
+    /**
+     * @return void
+     */
     private function throwNotFound()
     {
         print_r('404');
@@ -70,6 +69,11 @@ class Router
         $this->getRoutes[$url] = $handler;
     }
 
+    /**
+     * @param string $url
+     * @param array $handler
+     * @return void
+     */
     public function post(string $url, array $handler)
     {
         $this->postRoutes[$url] = $handler;

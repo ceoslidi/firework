@@ -10,7 +10,9 @@ use Config\Config;
 
 class HomeController
 {
-    public static function render()
+    private string $name = 'xui';
+
+    public function render($request, $response)
     {
         $database = new Database();
         $hash = new Hash();
@@ -18,10 +20,9 @@ class HomeController
         $session = new Session();
 
         echo '<pre>';
-        print_r($hash->hash('zhopa'));
-        print_r($database->connect()->delete('users', ['username' => 'xuy']));
-        print_r($session->set("xui", "aue"));
-        print_r($session->get("xui"));
+        $get = $request->get;
+        print_r($get['axuy']);
+        $response->reply(['status' => 'success']);
         echo '</pre>';
     }
 
