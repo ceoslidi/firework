@@ -1,5 +1,8 @@
 # Firework
-![Maintained](https://img.shields.io/badge/Maintained%3F-yes-green.svg)  [![Github repository link](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](github.com) [![Support us](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](example.com)
+![Maintained](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+[![Github repository link](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](github.com)
+[![Support us](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](example.com)
+
 **TL;DR: Lightweight and fast framework for creating simple web apps.**
 [Visit our site for more information](example.com).
 
