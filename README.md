@@ -13,7 +13,6 @@
  - Your project won't be burdened with unnecessary files.
  - Fast do develop and deploy.
  - Easy to use for newbies in php.
- - 
 
 ## Installation in 3 steps
  1. Make sure you've installed apache, php, npm and composer on your server.
