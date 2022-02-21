@@ -7,7 +7,7 @@
 [Visit our site for more information](example.com).
 
 ## Benefits
- - The easiest php web framework.
+ - The most lightweight php web framework.
  - Fast.
  - Easy to modify and use in other projects.
  - Your project won't be burdened with unnecessary files.
