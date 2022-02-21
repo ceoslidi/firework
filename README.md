@@ -7,12 +7,13 @@
 [Visit our site for more information](example.com).
 
 ## Benefits
- - The most lightweight php web framework.
+ - The most lightweight php web framework with wimple VC (View-Controller) architecture.
  - Fast.
  - Easy to modify and use in other projects.
  - Your project won't be burdened with unnecessary files.
  - Fast do develop and deploy.
  - Easy to use for newbies in php.
+ - 
 
 ## Installation in 3 steps
  1. Make sure you've installed apache, php, npm and composer on your server.
