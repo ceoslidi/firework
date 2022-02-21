@@ -8,6 +8,11 @@ use Firework\Hash;
 use Firework\Session;
 use Firework\View;
 
+/*
+ Class is a main constructor.
+ Includes
+  constructor.
+ */
 class Controller
 {
     public Database $database;

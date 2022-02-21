@@ -2,6 +2,13 @@
 
 namespace Firework;
 
+/*
+ Class matches the redirect url and request method.
+ Includes:
+  constructor,
+  private getRedirectURL method,
+  private getRequestMethod.
+ */
 class Request
 {
     public array $get;
@@ -15,14 +22,17 @@ class Request
         $this->get = $_GET;
         $this->post = $_POST;
 
-        $this->getRedirectUrl();
+        $this->getRedirectURL();
         $this->getRequestMethod();
     }
 
+    /*
+     Parses URL which will be redirected to.
+     */
     /**
      * @return void
      */
-    private function getRedirectUrl(): void
+    private function getRedirectURL(): void
     {
         $url = $_SERVER['REQUEST_URI'];
         $queryPost = strrpos($url, "?");
@@ -39,6 +49,9 @@ class Request
         $this->requestUrl = $redirectUrl;
     }
 
+    /*
+     Parses request method.
+     */
     /**
      * @return void
      */

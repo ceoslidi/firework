@@ -2,6 +2,13 @@
 
 namespace Firework;
 
+/*
+ Class controls session interactions.
+ Includes:
+  public function construct,
+  public get function,
+  public set function.
+ */
 class Session
 {
     public function construct()
@@ -9,6 +16,9 @@ class Session
         session_start();
     }
 
+    /*
+     Gets data from the $_SESSION.
+     */
     /**
      * @param string $key
      * @return mixed
@@ -24,6 +34,9 @@ class Session
         }
     }
 
+    /*
+     Puts data into the $_SESSION.
+     */
     /**
      * @param string $key
      * @param string $value

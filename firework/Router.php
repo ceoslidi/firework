@@ -7,6 +7,15 @@ use Error;
 use Firework\Response;
 use Firework\Request;
 
+/*
+ Class controls the app's routes. Includes:
+  constructor,
+  public get method,
+  public post method,
+  private request method,
+  private throwNotFound method,
+  destructor.
+ */
 class Router
 {
     private array $getRoutes;
@@ -28,12 +37,15 @@ class Router
         $this->request($this->request->requestUrl, $this->request->requestMethod);
     }
 
+    /*
+     Detects the request protocol for URL or returns 404.
+     */
     /**
      * @param string $requestUrl
      * @param string $requestMethod
      * @return void
      */
-    private function request(string $requestUrl, string $requestMethod)
+    private function request(string $requestUrl, string $requestMethod): void
     {
         if (isset($this->getRoutes[$requestUrl]) || isset($this->postRoutes[$requestUrl])) {
             $handler = match ($requestMethod) {
@@ -51,30 +63,40 @@ class Router
         }
     }
 
+    /*
+     Returns 404 error page.
+     */
     /**
      * @return void
      */
-    private function throwNotFound()
+    private function throwNotFound(): void
     {
         print_r('404');
+//        TODO: view for error pages.
     }
 
+    /*
+     Parses in-request data got with get method.
+     */
     /**
      * @param string $url
      * @param array $handler
      * @return void
      */
-    public function get(string $url, array $handler)
+    public function get(string $url, array $handler): void
     {
         $this->getRoutes[$url] = $handler;
     }
 
+    /*
+     Parses in-request data got with post method.
+     */
     /**
      * @param string $url
      * @param array $handler
      * @return void
      */
-    public function post(string $url, array $handler)
+    public function post(string $url, array $handler): void
     {
         $this->postRoutes[$url] = $handler;
     }

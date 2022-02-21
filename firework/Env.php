@@ -4,6 +4,11 @@ namespace Firework;
 
 use Dotenv\Dotenv;
 
+/*
+ Class loads .env file.
+ Includes
+  constructor.
+ */
 class Env
 {
     public function __construct()
