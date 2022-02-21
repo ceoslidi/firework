@@ -17,9 +17,11 @@
 ## Installation in 3 steps
  1. Make sure you've installed apache, php, npm and composer on your server.
  2. Download a Firework:
- `composer require firework/firework`.
- 3. Run an Installer file:
- `php firework.php install`.
+`composer create-project slidi/firework example`.
+ 3. Open a directory:
+`cd example`
+ 4. Run an Installer file:
+`php firework.php install`.
  Congratulations, you successfully installed Firework!
  
 ## Usage in 2 steps
