@@ -6,6 +6,14 @@
 **TL;DR: Lightweight and fast framework for creating simple web apps.**
 [Visit our site for more information](example.com).
 
+## Benefits
+ - The easiest php web framework.
+ - Fast.
+ - Easy to modify and use in other projects.
+ - Your project won't be burdened with unnecessary files.
+ - Fast do develop and deploy.
+ - Easy to use for newbies in php.
+
 ## Installation in 3 steps
  1. Make sure you've installed apache, php, npm and composer on your server.
  2. Download a Firework:
@@ -22,11 +30,6 @@
 ## Running in 1 step
 
  1. Run `php firework.php run` and chill out.
-
-## Goals
- - The easiest php web framework.
- - Fast.
- - Easy to modify and use in other projects.
  
 ## License
 - **MPL 2.0 (Mozilla Public License Version 2.0) license.**
