@@ -30,6 +30,11 @@ class View {
             $data[$matches[$i]] = $varValues[$str];
         }
 
+        $view = $this->parseLoops($view);
+        $view = $this->parseConds($view, $varValues);
+
+        if (!$view) throw new Exception('Something went wrong in rendering your view');
+
         foreach ($matches as $elem)
         {
             $str = $data[$elem];
@@ -52,5 +57,55 @@ class View {
             throw new Exception('Cannot reach the file you\' re looking for.');
 
         return $view;
+    }
+
+    /**
+     * @param string $view
+     * @return string|bool
+     */
+    private function parseLoops(string $view): string|bool
+    {
+        $res = '';
+        $view = str_replace('@foreach', 'foreach', $view);
+        preg_replace('/{/m', '{ $res . "', $view);
+        preg_replace('/}/m', '"}', $view);
+        eval($view);
+//            TODO: remove the eval() to improve safety
+
+        if (!$res) return false;
+
+        return $res;
+    }
+
+
+    /**
+     * @param $view
+     * @param $varValues
+     * @return bool|string
+     * @throws Exception
+     */
+    private function parseConds($view, $varValues): bool|string
+    {
+        $res = '';
+        $view = str_replace('@if', 'if', $view);
+        $view = str_replace('@elseif', 'elseif', $view);
+        $view = str_replace('@else', 'else', $view);
+        preg_replace('/{/m', '{ $res . "', $view);
+        preg_replace('/}/m', '"}', $view);
+        preg_match_all('/[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*/m', $view, $vars);
+        $vars = $vars[0];
+
+        foreach($vars as $var)
+        {
+            if (!isset($varValues[$var])) throw new Exception('Trying to get value of an undefined variable.');
+            str_replace($var, $varValues[$var], $view);
+        }
+
+        eval($view);
+//            TODO: remove the eval() to improve safety
+
+        if (!$res) return false;
+
+        return $res;
     }
 }
