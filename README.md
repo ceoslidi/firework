@@ -23,7 +23,7 @@
  Congratulations, you successfully installed Firework!
  
 ## Usage in 2 steps
- 1. Put your HTML into `/app/views` folder and , CSS&JS files into the `/static` folder.
+ 1. Put your HTML into `/app/views` folder, CSS/SASS/SCSS and JS/TS files into the `/static` folder.
  2. Rename `.html` files to `.fire.php`, replacing the dynamic variables you need with `{{variableName}}` in your code.
  **Make sure you've installed gulp if you're using .ts/.scss/.sass files compillation.**
 
