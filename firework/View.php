@@ -110,7 +110,6 @@ class View {
         return $res;
     }
 
-
     /*
      * Parses all conditions in view and changes them with their content matching the condition.
      */
