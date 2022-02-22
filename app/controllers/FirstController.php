@@ -12,6 +12,14 @@ class FirstController extends Controller
      */
     public function render(): void
     {
-        $this->view->renderView('first', []);
+        $this->view->renderView('first', [
+            'vars' => [
+                'id' => 1,
+                'xui' => 'ebal',
+            ],
+            'elems' => [
+                'name' => 'zhopa'
+            ]
+        ]);
     }
 }
