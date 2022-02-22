@@ -5,13 +5,13 @@ namespace Firework;
 use Config\Config;
 
 /*
- Class controls the database interactions.
- Includes:
-  public connect method,
-  public select method,
-  public update method,
-  public insert method,
-  public delete method.
+ * Class controls the database interactions.
+ * Includes:
+ *  public connect method,
+ *  public select method,
+ *  public update method,
+ *  public insert method,
+ *  public delete method.
  */
 class Database
 {
@@ -19,7 +19,7 @@ class Database
     private array $database = [];
 
     /*
-     Sets up the connection with the database.
+     * Sets up the connection with the database.
      */
     /**
      * @return $this
@@ -41,7 +41,7 @@ class Database
     }
 
     /*
-     Selects data from the database.
+     * Selects data from the database.
      */
     /**
      * @param string $table
@@ -93,7 +93,7 @@ class Database
     }
 
     /*
-     Updates data in the database.
+     * Updates data in the database.
      */
     /**
      * @param string $table
@@ -145,7 +145,7 @@ class Database
     }
 
     /*
-     Inserts data into the database.
+     * Inserts data into the database.
      */
     /**
      * @param string $table
@@ -188,7 +188,7 @@ class Database
     }
 
     /*
-     Deletes data from the database.
+     * Deletes data from the database.
      */
     /**
      * @param string $table

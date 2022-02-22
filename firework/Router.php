@@ -8,13 +8,14 @@ use Firework\Response;
 use Firework\Request;
 
 /*
- Class controls the app's routes. Includes:
-  constructor,
-  public get method,
-  public post method,
-  private request method,
-  private throwNotFound method,
-  destructor.
+ * Class controls the app's routes.
+ * Includes:
+ *  constructor,
+ *  public get method,
+ *  public post method,
+ *  private request method,
+ *  private throwNotFound method,
+ *  destructor.
  */
 class Router
 {
@@ -38,7 +39,7 @@ class Router
     }
 
     /*
-     Detects the request protocol for URL or returns 404.
+     * Detects the request protocol for URL or returns 404.
      */
     /**
      * @param string $requestUrl
@@ -64,7 +65,7 @@ class Router
     }
 
     /*
-     Returns 404 error page.
+     * Returns 404 error page.
      */
     /**
      * @return void
@@ -76,7 +77,7 @@ class Router
     }
 
     /*
-     Parses in-request data got with get method.
+     * Parses in-request data got with get method.
      */
     /**
      * @param string $url
@@ -89,7 +90,7 @@ class Router
     }
 
     /*
-     Parses in-request data got with post method.
+     * Parses in-request data got with post method.
      */
     /**
      * @param string $url

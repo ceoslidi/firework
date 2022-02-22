@@ -5,16 +5,16 @@ namespace Firework;
 use Exception;
 
 /*
- Class that controls view interactions.
- Includes:
-  public renderView method,
-  private getView method,
-  private parseViewLoops method,
-  private parseViewConds method.
+ * Class that controls view interactions.
+ * Includes:
+ *  public renderView method,
+ *  private getView method,
+ *  private parseViewLoops method,
+ *  private parseViewConds method.
  */
 class View {
     /*
-     Renders and returns code of view with defined name.
+     * Renders and returns code of view with defined name.
      */
     /**
      * @param string $viewName
@@ -57,7 +57,7 @@ class View {
     }
 
     /*
-     Function gets the code of view with defined name from the app dir.
+     * Function gets the code of view with defined name from the app dir.
      */
     /**
      * @param string $fileName
@@ -75,7 +75,7 @@ class View {
     }
 
     /*
-     Parses all loops in view and changes them with their content.
+     * Parses all loops in view and changes them with their content.
      */
     /**
      * @param string $view
@@ -100,7 +100,7 @@ class View {
 
 
     /*
-      Parses all conditions in view and changes them with their content matching the condition.
+     * Parses all conditions in view and changes them with their content matching the condition.
      */
     /**
      * @param $view

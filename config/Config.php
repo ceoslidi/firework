@@ -6,10 +6,10 @@ use Firework\Env;
 use JetBrains\PhpStorm\ArrayShape;
 
 /*
- Class writes data into the .env.
- Includes:
-  constructor,
-  public getDatabase method
+ * Class writes data into the .env.
+ * Includes:
+ *  constructor,
+ *  public getDatabase method
  */
 class Config
 {
@@ -19,7 +19,7 @@ class Config
     }
 
     /*
-     Gets the database information from .env.
+     * Gets the database information from .env.
      */
     /**
      * @return array
@@ -41,7 +41,7 @@ class Config
     }
 
     /*
-     Gets salt from the .env.
+     * Gets salt from the .env.
      */
     /**
      * @return string
@@ -52,7 +52,7 @@ class Config
     }
 
     /*
-     Gets upload settings from .env.
+     * Gets upload settings from .env.
      */
     /**
      * @return array

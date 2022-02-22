@@ -5,10 +5,10 @@ namespace Firework;
 use Config\Config;
 
 /*
- Class controls the file upload settings.
- Includes:
-  constructor,
-  public upload method.
+ * Class controls the file upload settings.
+ * Includes:
+ *  constructor,
+ *  public upload method.
  */
 class File
 {
@@ -23,7 +23,7 @@ class File
     }
 
     /*
-     Controls file upload settings.
+     * Controls file upload settings.
      */
     /**
      * @param string $formName

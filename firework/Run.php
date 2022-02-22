@@ -1,10 +1,10 @@
 <?php
 
 /*
- Class runs another processes
- Includes:
-  constructor,
-  private run method.
+ * Class runs another processes.
+ * Includes:
+ *  constructor,
+ *  private run method.
  */
 class Run
 {
@@ -13,7 +13,9 @@ class Run
         $this->run();
     }
 
-//    Runs the main process.
+    /*
+     * Runs the main process.
+     */
     /**
      * @return void
      */

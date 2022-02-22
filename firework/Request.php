@@ -3,11 +3,11 @@
 namespace Firework;
 
 /*
- Class matches the redirect url and request method.
- Includes:
-  constructor,
-  private getRedirectURL method,
-  private getRequestMethod.
+ * Class matches the redirect url and request method.
+ * Includes:
+ *  constructor,
+ *  private getRedirectURL method,
+ *  private getRequestMethod.
  */
 class Request
 {
@@ -27,7 +27,7 @@ class Request
     }
 
     /*
-     Parses URL which will be redirected to.
+     * Parses URL which will be redirected to.
      */
     /**
      * @return void
@@ -50,7 +50,7 @@ class Request
     }
 
     /*
-     Parses request method.
+     * Parses request method.
      */
     /**
      * @return void

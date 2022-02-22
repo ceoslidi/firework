@@ -3,14 +3,14 @@
 namespace Firework;
 
 /*
- Class encodes data into the JSON object.
- Includes
-  public reply method.
+ * Class encodes data into the JSON object.
+ * Includes
+ *  public reply method.
  */
 class Response
 {
     /*
-     Encodes data into the JSON object.
+     * Encodes data into the JSON object.
      */
     /**
      * @param array $options

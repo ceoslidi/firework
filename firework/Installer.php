@@ -1,12 +1,12 @@
 <?php
 
 /*
- Class controls interactions during installation.
- Includes:
-  constructor,
-  private setDatabase method,
-  private setSalt method,
-  private setUploadDir method.
+ * Class controls interactions during installation.
+ * Includes:
+ *  constructor,
+ *  private setDatabase method,
+ *  private setSalt method,
+ *  private setUploadDir method.
  */
 class Installer {
     public function __construct()
@@ -17,7 +17,7 @@ class Installer {
     }
 
     /*
-     Sets up the database and writes its data in .env.
+     * Sets up the database and writes its data in .env.
      */
     /**
      * @return void
@@ -48,7 +48,7 @@ class Installer {
     }
 
     /*
-     Sets up the salt (length = 16) and writes its data in .env.
+     * Sets up the salt (length = 16) and writes its data in .env.
      */
     /**
      * @return void
@@ -68,7 +68,7 @@ class Installer {
     }
 
     /*
-     Sets up the upload dir and writes its path in .env.
+     * Sets up the upload dir and writes its path in .env.
      */
     /**
      * @return void
