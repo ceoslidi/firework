@@ -2,6 +2,8 @@
 
 namespace Firework;
 
+use Firework\Csrf;
+
 use Exception;
 
 /*
@@ -42,8 +44,11 @@ class View {
             $data[$matches[$i]] = $varValues[$str];
         }
 
+        // TODO: FIX
+        /*
         $view = $this->parseViewLoops($view, $varValues);
         $view = $this->parseViewConds($view, $varValues);
+        */
 
         if (!$view) throw new Exception('Something went wrong in rendering your view');
 
