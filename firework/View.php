@@ -42,6 +42,7 @@ class View {
             $data[$matches[$i]] = $varValues[$str];
         }
 
+
         $view = $this->parseViewLoops($view);
         $view = $this->parseViewConds($view, $varValues);
 
@@ -97,7 +98,6 @@ class View {
 
         return $res;
     }
-
 
     /*
      * Parses all conditions in view and changes them with their content matching the condition.
