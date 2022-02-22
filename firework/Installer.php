@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Class controls interactions during installation.
+ * Includes:
+ *  constructor,
+ *  private setDatabase method,
+ *  private setSalt method,
+ *  private setUploadDir method.
+ */
 class Installer {
     public function __construct()
     {
@@ -8,6 +16,9 @@ class Installer {
         $this->setUploadsDir();
     }
 
+    /*
+     * Sets up the database and writes its data in .env.
+     */
     /**
      * @return void
      */
@@ -36,6 +47,9 @@ class Installer {
             fwrite(STDOUT, "DATABASE: Something went wrong!" . PHP_EOL);
     }
 
+    /*
+     * Sets up the salt (length = 16) and writes its data in .env.
+     */
     /**
      * @return void
      */
@@ -53,6 +67,9 @@ class Installer {
             fwrite(STDOUT, "SALT: Something went wrong!" . PHP_EOL);
     }
 
+    /*
+     * Sets up the upload dir and writes its path in .env.
+     */
     /**
      * @return void
      */
