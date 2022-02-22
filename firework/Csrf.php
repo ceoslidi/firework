@@ -40,7 +40,7 @@ class Csrf
         if ($this->request->requestMethod == 'POST')
         {
             $post = $this->request->post;
-            $token = $_POST['token'];
+            $token = $post['csrf'];
 
             $arr = explode(":", $token);
             $salt = $arr[0];
