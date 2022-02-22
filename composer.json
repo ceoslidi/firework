@@ -1,7 +1,7 @@
 {
-    "name": "ceo/firework",
+    "name": "slidi/firework",
     "description": "Simple Framework for Creating Simple Apps",
-    "type": "framework",
+    "type": "project",
     "autoload": {
         "psr-4": {
             "Firework\\": "firework",
@@ -9,14 +9,9 @@
             "Config\\": "config"
         }
     },
-    "authors": [
-        {
-            "name": "Yan Svintsov",
-            "email": "ceo@slidi.ru"
-        }
-    ],
     "require": {
         "vlucas/phpdotenv": "^5.4",
-      "ext-mysqli": "*"
-    }
+        "ext-mysqli": "*"
+    },
+    "license": "MPL-2.0"
 }
