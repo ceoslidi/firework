@@ -42,7 +42,7 @@ class View {
             $data[$matches[$i]] = $varValues[$str];
         }
 
-        $view = $this->parseViewLoops($view);
+        $view = $this->parseViewLoops($view, $varValues);
         $view = $this->parseViewConds($view, $varValues);
 
         if (!$view) throw new Exception('Something went wrong in rendering your view');
@@ -81,18 +81,28 @@ class View {
      * @param string $view
      * @return string|bool
      */
-    private function parseViewLoops(string $view): bool|string
+    private function parseViewLoops(string $view, $varValues): bool|string
     {
         $res = '';
 
 //       Changes the @foreach construction with inbuilt php loop.
         $view = str_replace('@foreach', 'foreach', $view);
 
+        preg_match_all('/[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*/m', $view, $vars);
+        $vars = $vars[0];
+
+        foreach($vars as $var)
+        {
+            if (!isset($varValues[$var])) throw new Exception('Trying to get value of an undefined variable.');
+            str_replace($var, $varValues[$var], $view);
+        }
+
         preg_replace('/{/m', '{ $res . "', $view);
         preg_replace('/}/m', '"}', $view);
-        eval($view);
+        eval(htmlspecialchars($view));
 //       TODO: remove the eval() to improve safety.
 
+        $res = htmlspecialchars_decode($res);
         if (!$res) return false;
 
         return $res;
@@ -128,8 +138,10 @@ class View {
             str_replace($var, $varValues[$var], $view);
         }
 
-        eval($view);
+        eval(htmlspecialchars($view));
 //       TODO: remove the eval() to improve safety.
+
+        $res = htmlspecialchars_decode($res);
 
         if (!$res) return false;
 
