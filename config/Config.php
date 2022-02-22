@@ -3,7 +3,14 @@
 namespace Config;
 
 use Firework\Env;
+use JetBrains\PhpStorm\ArrayShape;
 
+/*
+ * Class writes data into the .env.
+ * Includes:
+ *  constructor,
+ *  public getDatabase method
+ */
 class Config
 {
     public function __construct()
@@ -11,9 +18,18 @@ class Config
         $env = new Env();
     }
 
+    /*
+     * Gets the database information from .env.
+     */
     /**
      * @return array
      */
+    #[ArrayShape([
+        'host' => "false|string",
+        'user' => "false|string",
+        'password' => "false|string",
+        'database' => "false|string"
+    ])]
     public function getDatabase(): array
     {
         return [
@@ -24,6 +40,9 @@ class Config
         ];
     }
 
+    /*
+     * Gets salt from the .env.
+     */
     /**
      * @return string
      */
@@ -32,9 +51,17 @@ class Config
         return getenv('SALT');
     }
 
+    /*
+     * Gets upload settings from .env.
+     */
     /**
      * @return array
      */
+    #[ArrayShape([
+        'dir' => "false|string",
+        'maxSize' => "false|string",
+        'onlyImage' => "false|string"
+    ])]
     public function getUploadsSettings(): array
     {
         return [
