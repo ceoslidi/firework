@@ -79,7 +79,9 @@ class View {
      */
     /**
      * @param string $view
+     * @param $varValues
      * @return string|bool
+     * @throws Exception
      */
     private function parseViewLoops(string $view, $varValues): bool|string
     {
