@@ -30,8 +30,10 @@ class View {
             $data[$matches[$i]] = $varValues[$str];
         }
 
+        /*
         $view = $this->parseLoops($view);
         $view = $this->parseConds($view, $varValues);
+        */
 
         if (!$view) throw new Exception('Something went wrong in rendering your view');
 
@@ -59,6 +61,7 @@ class View {
         return $view;
     }
 
+
     /**
      * @param string $view
      * @return string|bool
@@ -76,7 +79,6 @@ class View {
 
         return $res;
     }
-
 
     /**
      * @param $view
