@@ -22,6 +22,7 @@ class Controller
     public Session $session;
     public View $view;
     public Csrf $csrf;
+    public Logger $logger;
 
     public function __construct()
     {
@@ -31,6 +32,7 @@ class Controller
         $this->session = new Session();
         $this->view = new View();
         $this->csrf = new Csrf();
+        $this->logger = new Logger();
 
         $this->csrf->checkToken();
     }
