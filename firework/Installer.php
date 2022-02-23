@@ -12,7 +12,6 @@ class Installer {
     public function __construct()
     {
         $this->setDatabase();
-        $this->setSalt();
         $this->setUploadsDir();
     }
 
@@ -45,26 +44,6 @@ class Installer {
             fwrite(STDOUT, "DATABASE: SUCCESS!" . PHP_EOL);
         else
             fwrite(STDOUT, "DATABASE: Something went wrong!" . PHP_EOL);
-    }
-
-    /*
-     * Sets up the salt (length = 16) and writes its data in .env.
-     */
-    /**
-     * @return void
-     */
-    private function setSalt(): void
-    {
-        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz!@$%^&*()';
-
-        $salt = PHP_EOL . PHP_EOL . "SALT=" . substr(str_shuffle($permitted_chars), 0, 16);
-
-        $saltResponse = file_put_contents(__DIR__ . '/../.env', $salt, FILE_APPEND);
-
-        if ($saltResponse)
-            fwrite(STDOUT, "SALT: SUCCESS!" . PHP_EOL);
-        else
-            fwrite(STDOUT, "SALT: Something went wrong!" . PHP_EOL);
     }
 
     /*

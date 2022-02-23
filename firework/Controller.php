@@ -7,6 +7,7 @@ use Firework\File;
 use Firework\Hash;
 use Firework\Session;
 use Firework\View;
+use Firework\Csrf;
 
 /*
  * Class is a main constructor.
@@ -20,6 +21,7 @@ class Controller
     public Hash $hash;
     public Session $session;
     public View $view;
+    public Csrf $csrf;
 
     public function __construct()
     {
@@ -28,5 +30,8 @@ class Controller
         $this->hash = new Hash();
         $this->session = new Session();
         $this->view = new View();
+        $this->csrf = new Csrf();
+
+        $this->csrf->checkToken();
     }
 }
