@@ -15,7 +15,7 @@ class Logger
     /**
      * @param string $logType
      * @param string $logText
-     * @param string $fromFile
+     * @param string $inFile
      * @return void
      */
     public function log(string $logType, string $logText, string $inFile)
