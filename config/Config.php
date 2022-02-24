@@ -82,7 +82,8 @@ class Config
             'host' => getenv('SMTP_HOST'),
             'user' => getenv('SMTP_USER'),
             'pass' => getenv('SMTP_PASS'),
-            'port' => getenv('SMTP_PORT')
+            'port' => getenv('SMTP_PORT'),
+            'from' => getenv('SMTP_FROM')
         ];
     }
 }

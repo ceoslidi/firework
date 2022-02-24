@@ -69,6 +69,9 @@ class Installer {
         $smtp = PHP_EOL . "SMTP_PORT=";
         file_put_contents(__DIR__ . '/../.env', $smtp, FILE_APPEND);
 
+        $smtp = PHP_EOL . "SMTP_FROM=";
+        file_put_contents(__DIR__ . '/../.env', $smtp, FILE_APPEND);
+
         fwrite(STDOUT, "SMTP: SUCCESS!" . PHP_EOL);
     }
 }

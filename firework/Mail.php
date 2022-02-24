@@ -42,6 +42,7 @@ class Mail
         $this->phpmailer->isHTML(true);
 
         $this->phpmailer->From = $settings['user'];
+        $this->phpmailer->FromName = $settings['from'];
         $this->phpmailer->addAddress($recipient);
         $this->phpmailer->Subject = $subject;
         $this->phpmailer->Body = $body;
