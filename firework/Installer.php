@@ -13,6 +13,7 @@ class Installer {
     {
         $this->setDatabase();
         $this->setUploadsDir();
+        $this->setSmtpSettings();
     }
 
     /*
@@ -23,27 +24,17 @@ class Installer {
      */
     private function setDatabase(): void
     {
-        fwrite(STDOUT, "Enter Database Host:" . PHP_EOL);
-        $host = "DATABASE_HOST=" . trim(fgets(STDIN));
+        $host = "DATABASE_HOST=";
+        $user = PHP_EOL . "DATABASE_USER=";
+        $password = PHP_EOL . "DATABASE_PASSWORD=";
+        $database = PHP_EOL . "DATABASE_NAME=";
 
-        fwrite(STDOUT, "Enter Database User:" . PHP_EOL);
-        $user = PHP_EOL . "DATABASE_USER=" . trim(fgets(STDIN));
+        file_put_contents(__DIR__ . '/../.env', $host, FILE_APPEND);
+        file_put_contents(__DIR__ . '/../.env', $user, FILE_APPEND);
+        file_put_contents(__DIR__ . '/../.env', $password, FILE_APPEND);
+        file_put_contents(__DIR__ . '/../.env', $database, FILE_APPEND);
 
-        fwrite(STDOUT, "Enter Database Password:" . PHP_EOL);
-        $password = PHP_EOL . "DATABASE_PASSWORD=" . trim(fgets(STDIN));
-
-        fwrite(STDOUT, "Enter Database Name:" . PHP_EOL);
-        $database = PHP_EOL . "DATABASE_NAME=" . trim(fgets(STDIN));
-
-        $hostResponse = file_put_contents(__DIR__ . '/../.env', $host, FILE_APPEND);
-        $userResponse = file_put_contents(__DIR__ . '/../.env', $user, FILE_APPEND);
-        $passwordResponse = file_put_contents(__DIR__ . '/../.env', $password, FILE_APPEND);
-        $databaseResponse = file_put_contents(__DIR__ . '/../.env', $database, FILE_APPEND);
-
-        if ($hostResponse && $userResponse && $passwordResponse && $databaseResponse)
-            fwrite(STDOUT, "DATABASE: SUCCESS!" . PHP_EOL);
-        else
-            fwrite(STDOUT, "DATABASE: Something went wrong!" . PHP_EOL);
+        fwrite(STDOUT, "DATABASE: SUCCESS!" . PHP_EOL);
     }
 
     /*
@@ -54,16 +45,30 @@ class Installer {
      */
     private function setUploadsDir(): void
     {
-        $file = PHP_EOL . PHP_EOL . "UPLOADS_DIR=" . trim(fgets(STDIN));
+        $file = PHP_EOL . PHP_EOL . "UPLOADS_DIR=";
 
-        $fileResponse = file_put_contents(__DIR__ . '/../.env', $file, FILE_APPEND);
+        file_put_contents(__DIR__ . '/../.env', $file, FILE_APPEND);
 
         file_put_contents(__DIR__ . '/../.env', PHP_EOL . "UPLOADS_MAX_SIZE=500000", FILE_APPEND);
         file_put_contents(__DIR__ . '/../.env', PHP_EOL . "UPLOADS_MIME_IMAGE=1", FILE_APPEND);
 
-        if ($fileResponse)
-            fwrite(STDOUT, "UPLOADS: SUCCESS!" . PHP_EOL);
-        else
-            fwrite(STDOUT, "SALT: Something went wrong!" . PHP_EOL);
+        fwrite(STDOUT, "UPLOADS: SUCCESS!" . PHP_EOL);
+    }
+
+    private function setSmtpSettings(): void
+    {
+        $smtp = PHP_EOL . PHP_EOL . "SMTP_HOST=";
+        file_put_contents(__DIR__ . '/../.env', $smtp, FILE_APPEND);
+
+        $smtp = PHP_EOL . "SMTP_USER=";
+        file_put_contents(__DIR__ . '/../.env', $smtp, FILE_APPEND);
+
+        $smtp = PHP_EOL . "SMTP_PASS=";
+        file_put_contents(__DIR__ . '/../.env', $smtp, FILE_APPEND);
+
+        $smtp = PHP_EOL . "SMTP_PORT=";
+        file_put_contents(__DIR__ . '/../.env', $smtp, FILE_APPEND);
+
+        fwrite(STDOUT, "SMTP: SUCCESS!" . PHP_EOL);
     }
 }
