@@ -12,7 +12,8 @@ use Exception;
  *  public renderView method,
  *  private getView method,
  *  private parseViewLoops method,
- *  private parseViewConds method.
+ *  private parseViewConds method,
+ *  private parseViewExtends method.
  */
 class View {
     /*
@@ -109,6 +110,7 @@ class View {
         $loops = $loops[0];
 
         if (count($loops) === 0)
+            preg_replace('/@endforeach/', '', $view);
             return $view;
 
         foreach($loops as $loop) {
@@ -157,6 +159,7 @@ class View {
         $condBlocks = $condBlocks[0];
 
         if (!$condBlocks)
+            preg_replace('/@endif/', '', $view);
             return $view;
 
         foreach ($condBlocks as $condBlock)
