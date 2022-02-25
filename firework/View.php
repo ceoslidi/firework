@@ -71,14 +71,11 @@ class View {
      */
     private function getView(string $fileType, string $fileName): string
     {
-        switch ($fileType) {
-            case 'view':
-                $view = file_get_contents(urldecode(__DIR__ . '/../app/views/' . $fileName));
-            case 'extend':
-                $view = file_get_contents(urldecode(__DIR__ . '/../app/views/extends' . $fileName));
-            default:
-                throw new Exception('Error: undefined view type.');
-        }
+        $view = match ($fileType) {
+            'view' => file_get_contents(urldecode(__DIR__ . '/../app/views/' . $fileName)),
+            'extend' => file_get_contents(urldecode(__DIR__ . '/../app/views/extends' . $fileName)),
+            default => throw new Exception('Error: undefined view type.'),
+        };
 
         if ($view === false)
             throw new Exception('Error: cannot reach the file you\' re looking for.');
@@ -98,8 +95,8 @@ class View {
     private function parseViewLoops(string $view, array $varValues): string
     {
 //         TODO: add @for, @while, @do ... @while
-        preg_match_all(
-            '/@foreach\s*?' // Matches start of loop, '@foreach'.
+        preg_match_all('/'
+                .'@foreach\s*?' // Matches start of loop, '@foreach'.
                 .'\(\s*?\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*\s+?' // Var with any possible name,
                                                                         // bracket and whitespaces, '($var'
                 .'as\s+?' // 'as'.
@@ -156,7 +153,6 @@ class View {
      */
     private function parseViewConds($view, $varValues): string
     {
-        $res = '';
         preg_match_all('/@if\s*\(.+\).+?@endif/s', $view, $condBlocks);
         $condBlocks = $condBlocks[0];
 
@@ -166,15 +162,34 @@ class View {
         foreach ($condBlocks as $condBlock)
         {
             preg_match_all('/\(.+/\)/', $condBlock, $conds);
-
+            $t = '';
             foreach ($conds as $cond)
             {
                 if (eval($cond))
                 {
-                    preg_match();
+                    preg_match('/'
+                            . '\(\s*'
+                            . $cond
+                            . '\)\s*'
+                            . '.+?(?=@elif|@else|@endif)'
+                            . '/s',
+                        $condBlock,
+                        $code);
+                    $code = preg_replace('/\s*' . $cond . '\s*/', '', $code[0], 1);
+                    preg_replace($condBlock, $code, $view);
+
+                    $t = $cond;
+                    break;
                 }
             }
+
+            if ($t == $conds[array_key_last($conds)] && !$t) {
+                preg_match('/(?=@else).+?@endif/s', $conds, $code);
+                $code = preg_replace('/@endif/', '', $code[0], 1);
+                preg_replace($condBlock, $code, $view);
+            }
         }
+
         return $this->parseViewConds($view, $varValues);
     }
 
