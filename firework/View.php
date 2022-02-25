@@ -27,7 +27,7 @@ class View {
     public function renderView(string $viewName, array $varValues): void
     {
         $fileName = $viewName . '.fire.php';
-        $view = $this->getView($fileName);
+        $view = $this->getView('view', $fileName);
         $matches = [];
 
 //       Matches all in-view vars.
@@ -57,20 +57,29 @@ class View {
             $view = str_replace($elem, $str, $view);
         }
 
-        print_r($view);
+        print_r(htmlspecialchars_decode($view));
     }
 
     /*
      * Function gets the code of view with defined name from the app dir.
      */
     /**
+     * @param string $fileType
      * @param string $fileName
      * @return string
      * @throws Exception
      */
-    private function getView(string $fileName): string
+    private function getView(string $fileType, string $fileName): string
     {
-        $view = file_get_contents(urldecode(__DIR__ . '/../app/views/' . $fileName));
+        switch ($fileType) {
+            case 'view':
+                $view = file_get_contents(urldecode(__DIR__ . '/../app/views/' . $fileName));
+            case 'extend':
+                $view = file_get_contents(urldecode(__DIR__ . '/../app/views/extends' . $fileName));
+            default:
+                throw new Exception('Error: undefined view type.');
+        }
+
 
         if ($view === false)
             throw new Exception('Error: cannot reach the file you\' re looking for.');
@@ -154,6 +163,15 @@ class View {
         if (!$condBlocks)
             return $view;
 
+        foreach ($condBlocks as $condBlock)
+        {
+            preg_match_all('/\(.+/\)/', $condBlock, $conds);
+
+            foreach ($conds as $cond)
+            {
+
+            }
+        }
         return $this->parseViewConds($view, $varValues);
     }
 
@@ -175,8 +193,8 @@ class View {
 
         foreach ($extends as $extend)
         {
-            preg_match('/\(.+?\)/s', $extend, $extendFileName);
-            preg_replace($extend, $this->getView($extendFileName), $extend);
+            preg_match('/\(.+?\)/s', $extend, $extendName);
+            preg_replace($extend, $this->getView('extend', $extendName . '.ext.php'), $extend);
         }
 
         return $this->parseViewExtends($view);
