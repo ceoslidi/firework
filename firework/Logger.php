@@ -2,29 +2,35 @@
 
 namespace Firework;
 
-/*
- * Class logs the data it gets into file ./logs.
- * Includes
- *  public log method.
- */
+use Firework\Request;
+
 class Logger
 {
-    /*
-     * Writes data in logs file.
-     */
+    private Request $request;
+
+    public function __construct()
+    {
+        $this->request = new Request();
+        $this->log();
+    }
+
     /**
-     * @param string $logType
-     * @param string $logText
-     * @param string $inFile
      * @return void
      */
-    public function log(string $logType, string $logText, string $inFile)
+    public function log(): void
     {
-        file_put_contents(__DIR__ . '/../logs', '['
-            . date('d.m.Y, H:i:s') . ']'
-            . $logType . ': '
-            . $logText . ' in file '
-            . $inFile
-            . PHP_EOL);
+        $ip = $this->request->ip;
+        $target = __DIR__ . '/../process.log';
+        $log =
+            $ip .
+            " - " .
+            $this->request->requestUrl .
+            " " .
+            $this->request->requestMethod .
+            " at " .
+            date('d.m.Y, H:i:s') .
+            PHP_EOL;
+
+        file_put_contents($target, $log, FILE_APPEND);
     }
 }

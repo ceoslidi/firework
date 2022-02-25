@@ -6,6 +6,7 @@ use Error;
 
 use Firework\Response;
 use Firework\Request;
+use Firework\Logger;
 
 /*
  * Class controls the app's routes.
@@ -24,11 +25,13 @@ class Router
 
     private Request $request;
     private Response $response;
+    private Logger $logger;
 
     public function __construct()
     {
         $this->request = new Request();
         $this->response = new Response();
+        $this->logger = new Logger();
     }
 
     public function __destruct()

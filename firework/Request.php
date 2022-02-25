@@ -16,6 +16,7 @@ class Request
 
     public string $requestUrl;
     public string $requestMethod;
+    public string $ip;
 
     public function __construct()
     {
@@ -24,6 +25,7 @@ class Request
 
         $this->getRedirectURL();
         $this->getRequestMethod();
+        $this->getIp();
     }
 
     /*
@@ -58,5 +60,13 @@ class Request
     private function getRequestMethod(): void
     {
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+    }
+
+    /**
+     * @return void
+     */
+    public function getIp(): void
+    {
+        $this->ip = $_SERVER['REMOTE_ADDR'];
     }
 }
