@@ -31,7 +31,7 @@ class View {
         $matches = [];
 
 //       Matches all in-view vars.
-        preg_match_all('/{{.*}}/i', $view, $matches);
+        preg_match_all('/{{.+}}/s', $view, $matches);
         $matches = $matches[0];
 
         $data = [];
@@ -44,13 +44,12 @@ class View {
             $data[$matches[$i]] = $varValues[$str];
         }
 
-        // TODO: FIX
-        /*
-        $view = $this->parseViewLoops($view, $varValues);
+        $view = $this->parseViewExtends($view, $varValues);
         $view = $this->parseViewConds($view, $varValues);
-        */
+        $view = $this->parseViewLoops($view, $varValues);
 
-        if (!$view) throw new Exception('Something went wrong in rendering your view');
+
+        if (!$view) throw new Exception('Error: something went wrong in rendering your view.');
 
         foreach ($matches as $elem)
         {
@@ -74,9 +73,9 @@ class View {
         $view = file_get_contents(urldecode(__DIR__ . '/../app/views/' . $fileName));
 
         if ($view === false)
-            throw new Exception('Cannot reach the file you\' re looking for.');
+            throw new Exception('Error: cannot reach the file you\' re looking for.');
 
-        return $view;
+        return htmlspecialchars($view);
     }
 
     /*
@@ -84,35 +83,58 @@ class View {
      */
     /**
      * @param string $view
-     * @param $varValues
-     * @return string|bool
+     * @param array $varValues
+     * @return string
      * @throws Exception
      */
-    private function parseViewLoops(string $view, $varValues): bool|string
+    private function parseViewLoops(string $view, array $varValues): string
     {
-        $res = '';
+//         TODO: add @for, @while, @do ... @while
+        preg_match_all(
+            '/@foreach\s*?' // Matches start of loop, '@foreach'.
+                .'\(\s*?\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*\s+?' // Var with any possible name,
+                                                                        // bracket and whitespaces, '($var'
+                .'as\s+?' // 'as'.
+                .'\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*?\s*?\)' // Second var, '$var)'.
+                .'.+?' // Any code inside.
+                .'@endforeach/s', // End of loop '@endforeach'.
+            $view,
+            $loops);
 
-//       Changes the @foreach construction with inbuilt php loop.
-        $view = str_replace('@foreach', 'foreach', $view);
+        $loops = $loops[0];
 
-        preg_match_all('/[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*/m', $view, $vars);
-        $vars = $vars[0];
+        if (count($loops) === 0)
+            return $view;
 
-        foreach($vars as $var)
-        {
-            if (!isset($varValues[$var])) throw new Exception('Trying to get value of an undefined variable.');
-            str_replace($var, $varValues[$var], $view);
+        foreach($loops as $loop) {
+            $res = '';
+
+//             First $var (before 'as').
+            preg_match('/(.+?)as/s', $loop, $subject);
+            $subject = trim(preg_replace('/@foreach\s*\(\$/s', '', $subject[1], 1));
+
+//            Second $var (after 'as').
+            preg_match('/(as.+?)\)/s', $loop, $var);
+            $var = trim(preg_replace('/as\s+\$/s', '', $var[1], 1));
+
+//            Looped code.
+            preg_match('/\).*?@endforeach/s', $loop, $code);
+            $code = trim(preg_replace('\(/s', '', $code[0], 1));
+            $code = trim(preg_replace('/\s*@endforeach/s', '', $code, 1));
+
+            if (!isset($varValues[$subject]))
+                throw new Exception('Error: trying to iterate an unknown variable.');
+
+            $subject = $varValues[$subject];
+
+            foreach ($subject as $s) {
+                $res = $res . str_replace('$' . $var, $s, $code);
+            }
+
+            str_replace($loop, $res, $view);
         }
 
-        preg_replace('/{/m', '{ $res . "', $view);
-        preg_replace('/}/m', '"}', $view);
-        eval(htmlspecialchars($view));
-//       TODO: remove the eval() to improve safety.
-
-        $res = htmlspecialchars_decode($res);
-        if (!$res) return false;
-
-        return $res;
+        return $this->parseViewLoops($view, $varValues);
     }
 
     /*
@@ -121,36 +143,42 @@ class View {
     /**
      * @param $view
      * @param $varValues
-     * @return bool|string
+     * @return string
      * @throws Exception
      */
-    private function parseViewConds($view, $varValues): bool|string
+    private function parseViewConds($view, $varValues): string
     {
         $res = '';
-//        Replaces @if, @elif and @else constructions with inbuilt analogues.
-        $view = str_replace('@if', 'if', $view);
-        $view = str_replace('@elseif', 'elseif', $view);
-        $view = str_replace('@else', 'else', $view);
-        preg_replace('/{/m', '{ $res . "', $view);
-        preg_replace('/}/m', '"}', $view);
+        preg_match_all('/@if\s*\(.+\).+?@endif/s', $view, $condBlocks);
 
-//       Matches all possible variable names.
-        preg_match_all('/[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*/m', $view, $vars);
-        $vars = $vars[0];
+        if (!$condBlocks)
+            return $view;
 
-        foreach($vars as $var)
+        return $this->parseViewConds($view, $varValues);
+    }
+
+
+    /*
+     * Parses @extend constructions that adds another code in file
+     */
+    /**
+     * @param string $view
+     * @return string
+     * @throws Exception
+     */
+    private function parseViewExtends(string $view): string
+    {
+        preg_match_all('/@extend\(.+?\)/s', $view, $extends);
+
+        if (!$extends)
+            return $view;
+
+        foreach ($extends as $extend)
         {
-            if (!isset($varValues[$var])) throw new Exception('Trying to get value of an undefined variable.');
-            str_replace($var, $varValues[$var], $view);
+            preg_match('/\(.+?\)/s', $extend, $extendFileName);
+            preg_replace($extend, $this->getView($extendFileName), $extend);
         }
 
-        eval(htmlspecialchars($view));
-//       TODO: remove the eval() to improve safety.
-
-        $res = htmlspecialchars_decode($res);
-
-        if (!$res) return false;
-
-        return $res;
+        return $this->parseViewExtends($view);
     }
 }
