@@ -80,7 +80,6 @@ class View {
                 throw new Exception('Error: undefined view type.');
         }
 
-
         if ($view === false)
             throw new Exception('Error: cannot reach the file you\' re looking for.');
 
@@ -159,6 +158,7 @@ class View {
     {
         $res = '';
         preg_match_all('/@if\s*\(.+\).+?@endif/s', $view, $condBlocks);
+        $condBlocks = $condBlocks[0];
 
         if (!$condBlocks)
             return $view;
@@ -169,7 +169,10 @@ class View {
 
             foreach ($conds as $cond)
             {
-
+                if (eval($cond))
+                {
+                    preg_match();
+                }
             }
         }
         return $this->parseViewConds($view, $varValues);
@@ -194,6 +197,7 @@ class View {
         foreach ($extends as $extend)
         {
             preg_match('/\(.+?\)/s', $extend, $extendName);
+            $extendName = $extendName[0];
             preg_replace($extend, $this->getView('extend', $extendName . '.ext.php'), $extend);
         }
 
