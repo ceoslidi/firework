@@ -70,4 +70,20 @@ class Config
             'onlyImage' => getenv('UPLOADS_MIME_IMAGE'),
         ];
     }
+
+    #[ArrayShape([
+        'host' => "array|false|string",
+        'user' => "array|false|string",
+        'pass' => "array|false|string",
+        'port' => "array|false|string"
+    ])] public function getMailSettings(): array
+    {
+        return [
+            'host' => getenv('SMTP_HOST'),
+            'user' => getenv('SMTP_USER'),
+            'pass' => getenv('SMTP_PASS'),
+            'port' => getenv('SMTP_PORT'),
+            'from' => getenv('SMTP_FROM')
+        ];
+    }
 }
