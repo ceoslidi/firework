@@ -12,7 +12,8 @@
     "require": {
         "vlucas/phpdotenv": "^5.4",
         "ext-mysqli": "*",
-        "phpmailer/phpmailer": "^6.5"
+        "phpmailer/phpmailer": "^6.5",
+      "ext-mbstring": "*"
     },
     "license": "MPL-2.0"
 }

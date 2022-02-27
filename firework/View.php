@@ -22,10 +22,10 @@ class View {
     /**
      * @param string $viewName
      * @param array $varValues
-     * @return void
+     * @return string
      * @throws Exception
      */
-    public function renderView(string $viewName, array $varValues): void
+    public function renderView(string $viewName, array $varValues): string
     {
         $fileName = $viewName . '.fire.php';
         $view = $this->getView('view', $fileName);
@@ -48,6 +48,9 @@ class View {
         $view = $this->parseViewExtends($view, $varValues);
         $view = $this->parseViewConds($view, $varValues);
         $view = $this->parseViewLoops($view, $varValues);
+        $csrf = new Csrf();
+
+        $token = $csrf->generateToken();
 
 
         if (!$view) throw new Exception('Error: something went wrong in rendering your view.');
@@ -59,6 +62,7 @@ class View {
         }
 
         print_r(htmlspecialchars_decode($view));
+        return $token;
     }
 
     /*
@@ -96,21 +100,47 @@ class View {
     private function parseViewLoops(string $view, array $varValues): string
     {
 //         TODO: add @for, @while, @do ... @while
-        preg_match_all('/'
+        /*
+            Parsing's divided into two steps to increase performance.
+            1) We go through all the characters in the view,
+            look for blocks that may contain dynamic content.
+            2) Then perform a full check with a regexp.
+        */
+        $t = ''; // Each block will be here
+        $canBeLoopBlock = [];
+        for ($i = 0; $i < mb_strlen($view); $i++) {
+            $char = mb_substr($view, $i, 1);
+            if ($char == '@' || strpos($t, '@'))
+                $t .= $char;
+
+            $starts = strpos($t, '@foreach');
+            $ends = strpos($t, '@endforeach');
+
+            if ($starts && $ends)
+                if ($starts - $ends == 0)
+                    array_pop($canBeLoopBlock) xor array_push($canBeLoopBlock, $t); // Add $t to last elem
+                    $t = '';
+        }
+
+
+        $loops = [];
+
+        foreach($canBeLoopBlock as $m)
+        {
+            preg_match('/'
                 .'@foreach\s*?' // Matches start of loop, '@foreach'.
                 .'\(\s*?\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*\s+?' // Var with any possible name,
-                                                                        // bracket and whitespaces, '($var'
+                // bracket and whitespaces, '($var'
                 .'as\s+?' // 'as'.
                 .'\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*?\s*?\)' // Second var, '$var)'.
                 .'.+?' // Any code inside.
                 .'@endforeach/s', // End of loop '@endforeach'.
-            $view,
-            $loops);
-
-        $loops = $loops[0];
+                $m,
+                $l);
+            $loops[] = $l[0];
+        }
 
         if (count($loops) === 0)
-            preg_replace('/@endforeach/', '', $view);
             return $view;
 
         foreach($loops as $loop) {
@@ -155,11 +185,40 @@ class View {
      */
     private function parseViewConds($view, $varValues): string
     {
-        preg_match_all('/@if\s*\(.+\).+?@endif/s', $view, $condBlocks);
-        $condBlocks = $condBlocks[0];
+        /*
+            Parsing's divided into two steps to increase performance.
+            1) We go through all the characters in the view,
+            look for blocks that may contain dynamic content.
+            2) Then perform a full check with a regexp.
+        */
+        $t = ''; // Each block will be here
+        $canBeCondBlock = [];
+        for ($i = 0; $i < mb_strlen($view); $i++) {
+            $char = mb_substr($view, $i, 1);
+            if ($char == '@' || strpos($t, '@'))
+                $t .= $char;
+
+            $starts = strpos($t, '@if');
+            $ends = strpos($t, '@endif');
+
+            if ($starts && $ends)
+                if ($starts - $ends == 0)
+                    array_pop($canBeCondBlock) xor array_push($canBeCondBlock, $t); // Add $t to last elem
+            $t = '';
+        }
+
+
+        $condBlocks = [];
+
+        foreach($canBeCondBlock as $m)
+        {
+            preg_match('/@if\s*\(.+\).+?@endif/s',
+                $m,
+                $c);
+            $condBlocks[] = $c[0];
+        }
 
         if (!$condBlocks)
-            preg_replace('/@endif/', '', $view);
             return $view;
 
         foreach ($condBlocks as $condBlock)
