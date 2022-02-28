@@ -29,6 +29,13 @@ class View {
     {
         $fileName = $viewName . '.fire.php';
         $view = $this->getView('view', $fileName);
+        $view = $this->parseViewExtends($view, $varValues);
+        $view = $this->parseViewConds($view, $varValues);
+        $view = $this->parseViewLoops($view, $varValues);
+        $csrf = new Csrf();
+
+        $token = $csrf->generateToken();
+        
         $matches = [];
 
 //       Matches all in-view vars.
@@ -45,12 +52,7 @@ class View {
             $data[$matches[$i]] = $varValues[$str];
         }
 
-        $view = $this->parseViewExtends($view, $varValues);
-        $view = $this->parseViewConds($view, $varValues);
-        $view = $this->parseViewLoops($view, $varValues);
-        $csrf = new Csrf();
-
-        $token = $csrf->generateToken();
+        
 
 
         if (!$view) throw new Exception('Error: something went wrong in rendering your view.');
