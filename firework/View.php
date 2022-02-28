@@ -269,6 +269,7 @@ class View {
     private function parseViewExtends(string $view): string
     {
         preg_match_all('/@extend\(.+?\)/s', $view, $extends);
+        $extends = $extends[0];
 
         if (!$extends)
             return $view;
