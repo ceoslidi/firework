@@ -129,10 +129,10 @@ class View {
         {
             preg_match('/'
                 .'@foreach\s*?' // Matches start of loop, '@foreach'.
-                .'\(\s*?\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*\s+?' // Var with any possible name,
+                .'\(\s*?{{[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*}}\s+?' // Var with any possible name,
                 // bracket and whitespaces, '($var'
                 .'as\s+?' // 'as'.
-                .'\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*?\s*?\)' // Second var, '$var)'.
+                .'{{[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*?}}\s*?\)' // Second var, '$var)'.
                 .'.+?' // Any code inside.
                 .'@endforeach/s', // End of loop '@endforeach'.
                 $m,
