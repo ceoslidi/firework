@@ -270,10 +270,11 @@ class View {
     private function parseViewExtends(string $view): string
     {
         preg_match_all('/@extend\(.+?\)/s', $view, $extends);
-        $extends = $extends[0];
 
-        if (!$extends)
+        if (empty($extends))
             return $view;
+
+        $extends = $extends[0];
 
         foreach ($extends as $extend)
         {
