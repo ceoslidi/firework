@@ -30,11 +30,6 @@ class View {
         $fileName = $viewName . '.fire.php';
         $view = $this->getView('view', $fileName);
         $view = $this->parseViewExtends($view, $varValues);
-        $view = $this->parseViewConds($view, $varValues);
-        $view = $this->parseViewLoops($view, $varValues);
-        $csrf = new Csrf();
-
-        $token = $csrf->generateToken();
         
         $matches = [];
 
@@ -62,6 +57,12 @@ class View {
             $str = $data[$elem];
             $view = str_replace($elem, $str, $view);
         }
+        
+        $view = $this->parseViewConds($view, $varValues);
+        $view = $this->parseViewLoops($view, $varValues);
+        $csrf = new Csrf();
+
+        $token = $csrf->generateToken();
 
         print_r(htmlspecialchars_decode($view));
         return $token;
@@ -269,10 +270,11 @@ class View {
     private function parseViewExtends(string $view): string
     {
         preg_match_all('/@extend\(.+?\)/s', $view, $extends);
-        $extends = $extends[0];
 
-        if (!$extends)
+        if (empty($extends))
             return $view;
+
+        $extends = $extends[0];
 
         foreach ($extends as $extend)
         {
