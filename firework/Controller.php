@@ -9,6 +9,7 @@ use Firework\Session;
 use Firework\View;
 use Firework\Csrf;
 use Firework\Mail;
+use Firework\Curl;
 
 /*
  * Class is a main constructor.
@@ -24,6 +25,7 @@ class Controller
     public View $view;
     public Csrf $csrf;
     public Mail $mail;
+    public Curl $curl;
 
     public function __construct()
     {
@@ -34,6 +36,7 @@ class Controller
         $this->view = new View();
         $this->csrf = new Csrf();
         $this->mail = new Mail();
+        $this->curl = new Curl();
 
         $this->csrf->checkToken();
     }

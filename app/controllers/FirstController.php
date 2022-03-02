@@ -13,7 +13,7 @@ class FirstController extends Controller
     public function render(): void
     {
         $this->view->renderView('first', [
-
+            'var' => 5
         ]);
     }
 }

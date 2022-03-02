@@ -12,9 +12,7 @@
     <h1 class="head">
         It's Fire.
     </h1>
-    @foreach(vars as var) {
-        var.id var.xui
-    }
+    @extend(extend)
     <p class="steps">
         You can modify the project for 3 steps:
     </p>
