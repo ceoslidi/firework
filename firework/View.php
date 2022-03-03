@@ -280,6 +280,8 @@ class View {
         {
             preg_match('/\(.+?\)/s', $extend, $extendName);
             $extendName = $extendName[0];
+            preg_replace('(', '', $extendName);
+            preg_replace(')', '', $extendName);
             preg_replace($extend, $this->getView('extend', $extendName . '.ext.php'), $extend);
         }
 
